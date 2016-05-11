@@ -7,14 +7,24 @@ public class CounterFactory {
     private static CounterFactory instance = null;
 
     public static CounterFactory get() {
-        String property = System.getProperty("factory.type");
+        final String factoryType = System.getProperty("factory.type");
+
         if (instance == null) {
-            if ("Switched".equals(property) || "SwitchedCounterFactory".equals(property)) {
-                instance = new SwitchedCounterFactory();
-            } else if ("Fake".equals(property) || "FakeCounterFactory".equals(property)) {
-                instance = new FakeCounterFactory();
-            } else {
-                throw new IllegalArgumentException();
+
+            switch (factoryType) {
+
+                case "Switched":
+                case "SwitchedCounterFactory":
+                    instance = new SwitchedCounterFactory();
+                    break;
+
+                case "Fake":
+                case "FakeCounterFactory":
+                    instance = new FakeCounterFactory();
+                    break;
+
+                default:
+                    throw new IllegalArgumentException("unknown factory type: " + factoryType);
             }
         }
         return instance;
