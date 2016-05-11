@@ -2,7 +2,14 @@ package edu.hm.diagne.arch.factory_pattern;
 
 import edu.hm.cs.rs.arch.a03_decorator.Counter;
 import edu.hm.cs.rs.arch.a03_decorator.UCounter;
-import edu.hm.ffrank.arch.decorator_pattern.*;
+import edu.hm.ffrank.arch.decorator_pattern.LoopCounter;
+import edu.hm.ffrank.arch.decorator_pattern.NaryCounter;
+import edu.hm.ffrank.arch.decorator_pattern.ClockSecondCounter;
+import edu.hm.ffrank.arch.decorator_pattern.PrintCounter;
+import edu.hm.ffrank.arch.decorator_pattern.ShiftedCounter;
+import edu.hm.ffrank.arch.decorator_pattern.JumpCounter;
+import edu.hm.ffrank.arch.decorator_pattern.LimitedCounter;
+import edu.hm.ffrank.arch.decorator_pattern.MultiCounter;
 
 import java.util.NoSuchElementException;
 
@@ -13,10 +20,11 @@ public class SwitchedCounterFactory extends CounterFactory {
     private static final int NARY_ARG_MIN = 2;
     private static final int NARY_ARG_MAX = 9;
     private static final String COUNTER_STRING = "Counter";
+
     public Counter make(String typename, int... args) {
         Counter counter = null;
-        if(typename.contains(COUNTER_STRING)){
-            typename = typename.substring(0,typename.indexOf(COUNTER_STRING));
+        if (typename.contains(COUNTER_STRING)) {
+            typename = typename.substring(0, typename.indexOf(COUNTER_STRING));
         }
         switch (typename) {
             case "U":
@@ -24,17 +32,17 @@ public class SwitchedCounterFactory extends CounterFactory {
                 break;
 
             case "Loop":
-                if(args.length == 0){
+                if (args.length == 0) {
                     throw new NoSuchElementException();
-                }else{
+                } else {
                     counter = new LoopCounter(args);
                 }
                 break;
 
             case "Nary":
-                if(args[0] < NARY_ARG_MIN && args[0] > NARY_ARG_MAX){
+                if (args[0] < NARY_ARG_MIN && args[0] > NARY_ARG_MAX) {
                     throw new IllegalArgumentException("Number for NaryCounter not permitted: " + args[0]);
-                }else{
+                } else {
                     counter = new NaryCounter(args[0]);
                 }
                 break;
@@ -49,12 +57,12 @@ public class SwitchedCounterFactory extends CounterFactory {
 
     public Counter make(Counter other, String typename, int arg) {
         Counter counter = null;
-        if(typename.contains(COUNTER_STRING)){
-            typename = typename.substring(0,typename.indexOf(COUNTER_STRING));
+        if (typename.contains(COUNTER_STRING)) {
+            typename = typename.substring(0, typename.indexOf(COUNTER_STRING));
         }
-        switch (typename){
+        switch (typename) {
             case "Print":
-                counter = new PrintCounter(other, (char)arg);
+                counter = new PrintCounter(other, (char) arg);
                 break;
 
             case "Shifted":
