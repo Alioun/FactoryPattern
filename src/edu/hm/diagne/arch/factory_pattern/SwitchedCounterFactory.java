@@ -12,16 +12,18 @@ import java.util.NoSuchElementException;
 public class SwitchedCounterFactory extends CounterFactory {
     private static final int NARY_ARG_MIN = 2;
     private static final int NARY_ARG_MAX = 9;
+    private static final String COUNTER_STRING = "Counter";
     public Counter make(String typename, int... args) {
         Counter counter = null;
+        if(typename.contains(COUNTER_STRING)){
+            typename = typename.substring(0,typename.indexOf(COUNTER_STRING));
+        }
         switch (typename) {
             case "U":
-            case "UCounter":
                 counter = new UCounter();
                 break;
 
             case "Loop":
-            case "LoopCounter":
                 if(args.length == 0){
                     throw new NoSuchElementException();
                 }else{
@@ -30,7 +32,6 @@ public class SwitchedCounterFactory extends CounterFactory {
                 break;
 
             case "Nary":
-            case "NaryCounter":
                 if(args[0] < NARY_ARG_MIN && args[0] > NARY_ARG_MAX){
                     throw new IllegalArgumentException("Number for NaryCounter not permitted: " + args[0]);
                 }else{
@@ -39,7 +40,6 @@ public class SwitchedCounterFactory extends CounterFactory {
                 break;
 
             case "ClockSecond":
-            case "ClockSecondCounter":
                 counter = new ClockSecondCounter();
                 break;
 
@@ -49,35 +49,32 @@ public class SwitchedCounterFactory extends CounterFactory {
 
     public Counter make(Counter other, String typename, int arg) {
         Counter counter = null;
+        if(typename.contains(COUNTER_STRING)){
+            typename = typename.substring(0,typename.indexOf(COUNTER_STRING));
+        }
         switch (typename){
             case "Print":
-            case "PrintCounter":
                 counter = new PrintCounter(other, (char)arg);
                 break;
 
             case "Shifted":
-            case "ShiftedCounter":
                 counter = new ShiftedCounter(other, arg);
                 break;
 
             case "Jump":
-            case "JumpCounter":
                 counter = new JumpCounter(other, arg);
                 break;
 
             case "Limited":
-            case "LimitedCounter":
                 counter = new LimitedCounter(other, arg);
                 break;
 
             case "Multi":
-            case "MultiCounter":
                 counter = new MultiCounter(other, arg);
                 break;
 
             //Selected counter not possible because of predicate
             case "Selected":
-            case "SelectedCounter":
                 //counter = new SelectedCounter(other, arg);
                 break;
         }
