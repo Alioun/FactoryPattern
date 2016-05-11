@@ -2,9 +2,7 @@ package edu.hm.diagne.arch.factory_pattern;
 
 import edu.hm.cs.rs.arch.a03_decorator.Counter;
 import edu.hm.cs.rs.arch.a03_decorator.UCounter;
-import edu.hm.ffrank.arch.decorator_pattern.ClockSecondCounter;
-import edu.hm.ffrank.arch.decorator_pattern.LoopCounter;
-import edu.hm.ffrank.arch.decorator_pattern.NaryCounter;
+import edu.hm.ffrank.arch.decorator_pattern.*;
 
 import java.util.NoSuchElementException;
 
@@ -50,6 +48,39 @@ public class SwitchedCounterFactory extends CounterFactory {
     }
 
     public Counter make(Counter other, String typename, int arg) {
-        return null;
+        Counter counter = null;
+        switch (typename){
+            case "Print":
+            case "PrintCounter":
+                counter = new PrintCounter(other, (char)arg);
+                break;
+
+            case "Shifted":
+            case "ShiftedCounter":
+                counter = new ShiftedCounter(other, arg);
+                break;
+
+            case "Jump":
+            case "JumpCounter":
+                counter = new JumpCounter(other, arg);
+                break;
+
+            case "Limited":
+            case "LimitedCounter":
+                counter = new LimitedCounter(other, arg);
+                break;
+
+            case "Multi":
+            case "MultiCounter":
+                counter = new MultiCounter(other, arg);
+                break;
+
+            //Selected counter not possible because of predicate
+            case "Selected":
+            case "SelectedCounter":
+                //counter = new SelectedCounter(other, arg);
+                break;
+        }
+        return counter;
     }
 }
