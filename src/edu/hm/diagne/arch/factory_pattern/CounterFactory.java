@@ -7,19 +7,21 @@ public class CounterFactory {
     private static CounterFactory instance = null;
 
     public static CounterFactory get() {
-        final String factoryType = System.getProperty("factory.type");
+        String factoryType = System.getProperty("factory.type");
+
+        if (factoryType.contains("CounterFactory")) {
+            factoryType = factoryType.substring(0, factoryType.indexOf("CounterFactory"));
+        }
 
         if (instance == null) {
 
             switch (factoryType) {
 
                 case "Switched":
-                case "SwitchedCounterFactory":
                     instance = new SwitchedCounterFactory();
                     break;
 
                 case "Fake":
-                case "FakeCounterFactory":
                     instance = new FakeCounterFactory();
                     break;
 
