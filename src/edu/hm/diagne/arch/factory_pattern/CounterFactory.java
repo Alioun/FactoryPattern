@@ -1,9 +1,11 @@
 package edu.hm.diagne.arch.factory_pattern;
 
+import edu.hm.cs.rs.arch.a03_decorator.Counter;
+
 /**
  * Created by diagne on 11/05/16.
  */
-public class CounterFactory {
+public abstract class CounterFactory {
     private static CounterFactory instance = null;
 
     public static CounterFactory get() {
@@ -31,4 +33,8 @@ public class CounterFactory {
         }
         return instance;
     }
+
+    public abstract Counter make(String typename, int... args);
+
+    public abstract Counter make(Counter other, String typename, int arg);
 }
