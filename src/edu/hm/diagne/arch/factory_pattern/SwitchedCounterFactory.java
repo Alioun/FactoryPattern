@@ -1,3 +1,10 @@
+/**
+ * Organisation: Hochschule München
+ * Java: Version 1.8
+ *
+ * @version 12.05.2016
+ * @author Florian Frank, Alioun Diagne
+ */
 package edu.hm.diagne.arch.factory_pattern;
 
 import edu.hm.cs.rs.arch.a03_decorator.Counter;
@@ -14,13 +21,23 @@ import edu.hm.ffrank.arch.decorator_pattern.MultiCounter;
 import java.util.NoSuchElementException;
 
 /**
- * Created by diagne on 11/05/16.
+ * This class makes decorated or basic Counters.
  */
 public class SwitchedCounterFactory extends CounterFactory {
+    /**
+     * Low end of the range allowed for the NaryCounter
+     */
     private static final int NARY_ARG_MIN = 2;
+    /**
+     * High end of the range allowed for the NaryCounter
+     */
     private static final int NARY_ARG_MAX = 9;
+    /**
+     * Counter string because there were too many instances of it before.
+     */
     private static final String COUNTER_STRING = "Counter";
 
+    @Override
     public Counter make(String typename, int... args) {
         Counter counter = null;
         if (typename.contains(COUNTER_STRING)) {
@@ -55,6 +72,7 @@ public class SwitchedCounterFactory extends CounterFactory {
         return counter;
     }
 
+    @Override
     public Counter make(Counter other, String typename, int arg) {
         Counter counter = null;
         if (typename.contains(COUNTER_STRING)) {
