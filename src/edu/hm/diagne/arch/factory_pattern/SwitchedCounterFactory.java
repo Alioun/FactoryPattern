@@ -25,11 +25,11 @@ import java.util.NoSuchElementException;
  */
 public class SwitchedCounterFactory extends CounterFactory {
     /**
-     * Low end of the range allowed for the NaryCounter
+     * Low end of the range allowed for the NaryCounter.
      */
     private static final int NARY_ARG_MIN = 2;
     /**
-     * High end of the range allowed for the NaryCounter
+     * High end of the range allowed for the NaryCounter.
      */
     private static final int NARY_ARG_MAX = 9;
     /**
@@ -40,10 +40,11 @@ public class SwitchedCounterFactory extends CounterFactory {
     @Override
     public Counter make(String typename, int... args) {
         Counter counter = null;
+        String counterName = typename;
         if (typename.contains(COUNTER_STRING)) {
-            typename = typename.substring(0, typename.indexOf(COUNTER_STRING));
+            counterName = typename.substring(0, typename.indexOf(COUNTER_STRING));
         }
-        switch (typename) {
+        switch (counterName) {
             case "U":
                 counter = new UCounter();
                 break;
@@ -67,6 +68,9 @@ public class SwitchedCounterFactory extends CounterFactory {
             case "ClockSecond":
                 counter = new ClockSecondCounter();
                 break;
+            default:
+                counter = null;
+                break;
 
         }
         return counter;
@@ -75,10 +79,11 @@ public class SwitchedCounterFactory extends CounterFactory {
     @Override
     public Counter make(Counter other, String typename, int arg) {
         Counter counter = null;
+        String counterName = typename;
         if (typename.contains(COUNTER_STRING)) {
-            typename = typename.substring(0, typename.indexOf(COUNTER_STRING));
+            counterName = typename.substring(0, typename.indexOf(COUNTER_STRING));
         }
-        switch (typename) {
+        switch (counterName) {
             case "Print":
                 counter = new PrintCounter(other, (char) arg);
                 break;
@@ -98,10 +103,8 @@ public class SwitchedCounterFactory extends CounterFactory {
             case "Multi":
                 counter = new MultiCounter(other, arg);
                 break;
-
-            //Selected counter not possible because of predicate
-            case "Selected":
-                //counter = new SelectedCounter(other, arg);
+            default:
+                counter = null;
                 break;
         }
         return counter;
