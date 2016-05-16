@@ -30,12 +30,16 @@ public abstract class CounterFactory {
      */
     public static CounterFactory get() {
         String factoryType = System.getProperty("factory.type");
-        final CounterFactory instance;
 
-        if (factoryType.contains("CounterFactory")) {
-            factoryType = factoryType.substring(0, factoryType.indexOf("CounterFactory"));
+        if (factoryType == null) {
+            throw new NullPointerException("Systemproperty factory.type not specified");
+        } else {
+            if (factoryType.contains("CounterFactory")) {
+                factoryType = factoryType.substring(0, factoryType.indexOf("CounterFactory"));
+            }
         }
 
+        final CounterFactory instance;
             switch (factoryType) {
 
                 case "Switched":
@@ -53,7 +57,7 @@ public abstract class CounterFactory {
                     break;
 
                 default:
-                    throw new IllegalArgumentException("unknown factory type: " + factoryType);
+                    throw new IllegalArgumentException("Unknown factory type: " + factoryType);
             }
         return instance;
     }

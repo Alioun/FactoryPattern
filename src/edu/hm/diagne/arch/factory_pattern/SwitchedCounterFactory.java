@@ -9,14 +9,7 @@ package edu.hm.diagne.arch.factory_pattern;
 
 import edu.hm.cs.rs.arch.a03_decorator.Counter;
 import edu.hm.cs.rs.arch.a03_decorator.UCounter;
-import edu.hm.ffrank.arch.decorator_pattern.LoopCounter;
-import edu.hm.ffrank.arch.decorator_pattern.NaryCounter;
-import edu.hm.ffrank.arch.decorator_pattern.ClockSecondCounter;
-import edu.hm.ffrank.arch.decorator_pattern.PrintCounter;
-import edu.hm.ffrank.arch.decorator_pattern.ShiftedCounter;
-import edu.hm.ffrank.arch.decorator_pattern.JumpCounter;
-import edu.hm.ffrank.arch.decorator_pattern.LimitedCounter;
-import edu.hm.ffrank.arch.decorator_pattern.MultiCounter;
+import edu.hm.ffrank.arch.decorator_pattern.*;
 
 /**
  * This class makes decorated or basic Counters.
@@ -38,10 +31,8 @@ public class SwitchedCounterFactory extends CounterFactory {
     @Override
     public Counter make(String typename, int... args) {
         Counter counter = null;
-        String counterName = typename;
-        if (typename.contains(COUNTER_STRING)) {
-            counterName = typename.substring(0, typename.indexOf(COUNTER_STRING));
-        }
+        String counterName = counterName = counterSubstringHelper(typename);
+
         switch (counterName) {
             case "U":
                 counter = new UCounter();
@@ -56,14 +47,14 @@ public class SwitchedCounterFactory extends CounterFactory {
                 break;
 
             case "Nary":
-                if(args.length != 1){
-                    throw new IllegalArgumentException("Narycounter exactly one Parameter");
-                }else {
+                if(args.length == 1){
                     if (args[0] < NARY_ARG_MIN || args[0] > NARY_ARG_MAX) {
                         throw new IllegalArgumentException("Number for NaryCounter not permitted: " + args[0]);
                     } else {
                         counter = new NaryCounter(args[0]);
                     }
+                }else {
+                    throw new IllegalArgumentException("Narycounter exactly one Parameter");
                 }
 
                 break;
@@ -72,7 +63,7 @@ public class SwitchedCounterFactory extends CounterFactory {
                 counter = new ClockSecondCounter();
                 break;
             default:
-                throw new IllegalArgumentException("Counter"+typename+"doesn't exists");
+                throw new IllegalArgumentException("Counter "+typename+" doesn't exist");
 
         }
         return counter;
@@ -110,5 +101,16 @@ public class SwitchedCounterFactory extends CounterFactory {
                 break;
         }
         return counter;
+    }
+
+    /**
+     * Cuts "Counter" out of a given string.
+     * @param typeName Long string to cut "Counter" from.
+     * @return String without "Counter".
+     */
+    private String counterSubstringHelper(String typeName){
+        if (typeName.contains(COUNTER_STRING)) {
+            return typeName.substring(0, typeName.indexOf(COUNTER_STRING));
+        }
     }
 }
