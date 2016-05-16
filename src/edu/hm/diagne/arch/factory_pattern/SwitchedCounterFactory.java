@@ -78,11 +78,9 @@ public class SwitchedCounterFactory extends CounterFactory {
 
     @Override
     public Counter make(Counter other, String typename, int arg) {
-        Counter counter = null;
-        String counterName = typename;
-        if (typename.contains(COUNTER_STRING)) {
-            counterName = typename.substring(0, typename.indexOf(COUNTER_STRING));
-        }
+        final Counter counter;
+        final String counterName = counterSubstringHelper(typename);
+
         switch (counterName) {
             case "Print":
                 counter = new PrintCounter(other, (char) arg);
