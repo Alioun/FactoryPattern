@@ -51,26 +51,30 @@ public class SwitchedCounterFactory extends CounterFactory {
 
             case "Loop":
                 if (args.length == 0) {
-                    throw new NoSuchElementException();
+                    throw new IllegalArgumentException("Loopcounter expects at least one parameter");
                 } else {
                     counter = new LoopCounter(args);
                 }
                 break;
 
             case "Nary":
-                if (args[0] < NARY_ARG_MIN && args[0] > NARY_ARG_MAX) {
-                    throw new IllegalArgumentException("Number for NaryCounter not permitted: " + args[0]);
-                } else {
-                    counter = new NaryCounter(args[0]);
+                if(args.length != 1){
+                    throw new IllegalArgumentException("Narycounter exactly one Parameter");
+                }else {
+                    if (args[0] < NARY_ARG_MIN || args[0] > NARY_ARG_MAX) {
+                        throw new IllegalArgumentException("Number for NaryCounter not permitted: " + args[0]);
+                    } else {
+                        counter = new NaryCounter(args[0]);
+                    }
                 }
+
                 break;
 
             case "ClockSecond":
                 counter = new ClockSecondCounter();
                 break;
             default:
-                counter = null;
-                break;
+                throw new IllegalArgumentException("Counter"+typename+"doesn't exists");
 
         }
         return counter;
