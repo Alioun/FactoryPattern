@@ -18,8 +18,6 @@ import edu.hm.ffrank.arch.decorator_pattern.JumpCounter;
 import edu.hm.ffrank.arch.decorator_pattern.LimitedCounter;
 import edu.hm.ffrank.arch.decorator_pattern.MultiCounter;
 
-import java.util.NoSuchElementException;
-
 /**
  * This class makes decorated or basic Counters.
  */

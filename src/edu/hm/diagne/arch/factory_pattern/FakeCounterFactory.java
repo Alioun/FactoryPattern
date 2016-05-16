@@ -17,15 +17,15 @@ public class FakeCounterFactory extends CounterFactory {
     /**
      * Counter that always reads 0.
      */
-    private static Counter fakeCounter = new LoopCounter(0);
+    private static final Counter FAKE_COUNTER = new LoopCounter(0);
 
     @Override
     public Counter make(String typename, int... args) {
-        return fakeCounter;
+        return FAKE_COUNTER;
     }
 
     @Override
     public Counter make(Counter other, String typename, int arg) {
-        return fakeCounter;
+        return FAKE_COUNTER;
     }
 }

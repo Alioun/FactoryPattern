@@ -14,6 +14,7 @@ import static org.junit.Assert.*;
 /**
  * Created by florianfrank on 16.05.16.
  */
+@SuppressWarnings("PMD")
 public class FactoryPatternTest  {
 
     @Test

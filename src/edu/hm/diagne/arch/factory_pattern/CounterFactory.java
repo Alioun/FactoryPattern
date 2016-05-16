@@ -16,12 +16,12 @@ public abstract class CounterFactory {
     /**
      * Object to guarantee only one FakeCounterFactory gets made.
      */
-    private static CounterFactory fakeFactoryInstance = null;
+    private static CounterFactory fakeFactoryInstance;
 
     /**
      * Object to guarantee only one SwitchedCounterFactory gets made.
      */
-    private static CounterFactory switchedFactoryInstance = null;
+    private static CounterFactory switchedFactoryInstance;
 
     /**
      * Makes a factory corresponding to the type stated in the Systemproperty factory.type.
