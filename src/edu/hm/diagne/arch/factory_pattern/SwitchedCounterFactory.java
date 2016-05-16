@@ -9,7 +9,14 @@ package edu.hm.diagne.arch.factory_pattern;
 
 import edu.hm.cs.rs.arch.a03_decorator.Counter;
 import edu.hm.cs.rs.arch.a03_decorator.UCounter;
-import edu.hm.ffrank.arch.decorator_pattern.*;
+import edu.hm.ffrank.arch.decorator_pattern.LoopCounter;
+import edu.hm.ffrank.arch.decorator_pattern.NaryCounter;
+import edu.hm.ffrank.arch.decorator_pattern.ClockSecondCounter;
+import edu.hm.ffrank.arch.decorator_pattern.PrintCounter;
+import edu.hm.ffrank.arch.decorator_pattern.ShiftedCounter;
+import edu.hm.ffrank.arch.decorator_pattern.JumpCounter;
+import edu.hm.ffrank.arch.decorator_pattern.LimitedCounter;
+import edu.hm.ffrank.arch.decorator_pattern.MultiCounter;
 
 /**
  * This class makes decorated or basic Counters.
@@ -30,8 +37,8 @@ public class SwitchedCounterFactory extends CounterFactory {
 
     @Override
     public Counter make(String typename, int... args) {
-        Counter counter = null;
-        String counterName = counterName = counterSubstringHelper(typename);
+        final Counter counter;
+        final String counterName = counterSubstringHelper(typename);
 
         switch (counterName) {
             case "U":
@@ -109,8 +116,10 @@ public class SwitchedCounterFactory extends CounterFactory {
      * @return String without "Counter".
      */
     private String counterSubstringHelper(String typeName){
+        String newSubstring = typeName;
         if (typeName.contains(COUNTER_STRING)) {
-            return typeName.substring(0, typeName.indexOf(COUNTER_STRING));
+             newSubstring = typeName.substring(0, typeName.indexOf(COUNTER_STRING));
         }
+        return newSubstring;
     }
 }
