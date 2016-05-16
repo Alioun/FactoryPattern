@@ -1,6 +1,8 @@
 package edu.hm.diagne.arch.factory_pattern.Tests;
 
 import edu.hm.cs.rs.arch.a03_decorator.Counter;
+import edu.hm.diagne.arch.factory_pattern.CounterFactory;
+import edu.hm.diagne.arch.factory_pattern.FakeCounterFactory;
 import edu.hm.diagne.arch.factory_pattern.SwitchedCounterFactory;
 import edu.hm.ffrank.arch.decorator_pattern.LoopCounter;
 import org.junit.Test;
@@ -8,6 +10,7 @@ import org.junit.Test;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.util.Calendar;
+import java.util.Properties;
 
 import static org.junit.Assert.*;
 
@@ -20,10 +23,10 @@ public class FactoryPatternTest  {
     @Test
     public void swichtedElementaryCounterTest(){
         SwitchedCounterFactory switchedCounterFactory = new SwitchedCounterFactory();
-        Counter ucounter =  switchedCounterFactory.make("U");
-        Counter loopCounter = switchedCounterFactory.make("Loop",1,2,3);
-        Counter naryCounter = switchedCounterFactory.make("Nary",3);
-        Counter clockSecondCounter = switchedCounterFactory.make("ClockSecond");
+        Counter ucounter =  switchedCounterFactory.make("UCounter");
+        Counter loopCounter = switchedCounterFactory.make("LoopCounter",1,2,3);
+        Counter naryCounter = switchedCounterFactory.make("NaryCounter",3);
+        Counter clockSecondCounter = switchedCounterFactory.make("ClockSecondCounter");
 
             //UCounter Tests
             for(int i = 0 ; i< 10; i++){
@@ -192,6 +195,29 @@ public class FactoryPatternTest  {
         assertEquals(second,multiClockSecondCounter.tick().read());
     }
 
+    @Test
+    public void fakeCounterTest(){
+        FakeCounterFactory fakeCounterFactory = new FakeCounterFactory();
+        Counter loopCounter = fakeCounterFactory.make("Loop",1,2,3);
+        Counter naryCounter = fakeCounterFactory.make("Nary",1,2,3);
+        assertEquals(0, loopCounter.read());
+        assertEquals(0, naryCounter.read());
+    }
+
+    @Test
+    public void duplicatedFactoryTest(){
+        System.setProperty("factory.type","Fake");
+        CounterFactory fakeCounter1 = CounterFactory.get();
+        CounterFactory fakeCounter2 = CounterFactory.get();
+        assertEquals(fakeCounter1.getClass(),FakeCounterFactory.class);
+        assertEquals(fakeCounter1.hashCode(),fakeCounter2.hashCode());
+        System.setProperty("factory.type","Switched");
+        CounterFactory swichtedCounter1 = CounterFactory.get();
+        CounterFactory switchedCounter2 = CounterFactory.get();
+        assertEquals(swichtedCounter1.getClass(),SwitchedCounterFactory.class);
+        assertEquals(swichtedCounter1.hashCode(),switchedCounter2.hashCode());
+    }
+
     @Test(expected = IllegalArgumentException.class)
     public void switchedCounterFalseClassNameExceptionTest(){
         SwitchedCounterFactory switchedCounterFactory = new SwitchedCounterFactory();
@@ -209,6 +235,5 @@ public class FactoryPatternTest  {
         SwitchedCounterFactory switchedCounterFactory = new SwitchedCounterFactory();
         switchedCounterFactory.make("Nary");
     }
-
 
 }
